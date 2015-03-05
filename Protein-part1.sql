@@ -10,12 +10,12 @@ DROP TABLE IF EXISTS Protein_interaction;
 
 
 CREATE TABLE Protein(
-        protein_internal_id INTEGER,
+        pid INTEGER,
         name varchar(50),
         description varchar(200),
         organism varchar(100),
         sequence varchar(200),
-        PRIMARY KEY(protein_internal_id)
+        PRIMARY KEY(pid)
 )ENGINE=InnoDB;
 
 
@@ -33,7 +33,7 @@ CREATE TABLE protein_has_interaction(
         pid INTEGER,
         fake_id INTEGER,
         PRIMARY KEY(pid,fake_id),
-        FOREIGN KEY(pid) REFERENCES Protein(protein_internal_id),
+        FOREIGN KEY(pid) REFERENCES Protein(pid),
         FOREIGN KEY(fake_id) REFERENCES Protein_interaction(fake_id)
 )ENGINE=InnoDB;
 
@@ -61,7 +61,7 @@ CREATE TABLE protein_link_ensembleplant(
         pid INTEGER,
         ensemble_id INTEGER,
         PRIMARY KEY(pid,ensemble_id),
-        FOREIGN KEY(pid) REFERENCES Protein(protein_internal_id),
+        FOREIGN KEY(pid) REFERENCES Protein(pid),
         FOREIGN KEY(ensemble_id) REFERENCES EnsemblePlant(ensemble_id)
 )ENGINE=InnoDB;
 
@@ -70,7 +70,7 @@ CREATE TABLE protein_link_refseq(
         pid INTEGER,
         refseq_id INTEGER,
         PRIMARY KEY(pid,refseq_id),
-        FOREIGN KEY(pid) REFERENCES Protein(protein_internal_id),
+        FOREIGN KEY(pid) REFERENCES Protein(pid),
         FOREIGN KEY(refseq_id) REFERENCES RefSeq(refseq_id)
 )ENGINE=InnoDB;
 
@@ -79,7 +79,7 @@ CREATE TABLE protein_link_uniprotKB(
         pid INTEGER,
         uniprot_id INTEGER,
         PRIMARY KEY(pid,uniprot_id),
-        FOREIGN KEY(pid) REFERENCES Protein(protein_internal_id),
+        FOREIGN KEY(pid) REFERENCES Protein(pid),
         FOREIGN KEY(uniprot_id) REFERENCES UniprotKB(uniprot_id)
 )ENGINE=InnoDB;
 
