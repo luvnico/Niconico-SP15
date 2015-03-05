@@ -5,3 +5,4 @@ Xueyan:
 Cecilia:
   Made User related entities and attributes ERD, created User.sql (create statements) and 3 queries for project proposal.
 Nick:
+  Created the Job entity and the related entities, created the jobs.sql file and 3 queries for the project proposal.
