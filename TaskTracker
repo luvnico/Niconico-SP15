@@ -3,7 +3,8 @@ Yihua:
   Keep contact with client, made a draft for the ERD, arranged group meeting and assigned tasks to group members.
   Drew most part of ERD related to Protein and helped create the rest of tables about protein.
 Xueyan:
-  Helped draw the ERD related to Protein and created most tables about Protein in Protein-part1.sql file.
+  Helped draw the ERD related to Protein and created most tables about Protein in Protein-part1.sql file. 
+  Wrote three useful queries about table "Protein" and corresponding relational algebra(if it can be represented).
 Cecilia:
   Made User related entities and attributes ERD, created User.sql (create statements) and 3 queries for project proposal.
 Nick:
