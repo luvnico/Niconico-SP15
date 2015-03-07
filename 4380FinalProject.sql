@@ -1,16 +1,8 @@
-DROP TABLE IF EXISTS Interacts;
-DROP TABLE IF EXISTS protein_link_genbank;
-DROP TABLE IF EXISTS protein_link_refseq;
-DROP TABLE IF EXISTS protein_link_uniprotKB;
-DROP TABLE IF EXISTS GenBank;
-DROP TABLE IF EXISTS RefSeq;
-DROP TABLE IF EXISTS UniprotKB;
-DROP TABLE IF EXISTS Gene_Ontology;
-DROP TABLE IF EXISTS protein_has_go;
-DROP TABLE IF EXISTS Subcellular_Location;
-DROP TABLE IF EXISTS protein_has_location;
-DROP TABLE IF EXISTS Protein_Info;
-DROP TABLE IF EXISTS Protein;
+DROP TABLE IF EXISTS Error;
+DROP TABLE IF EXISTS BLAST;
+DROP TABLE IF EXISTS MitoLoc;
+DROP TABLE IF EXISTS Result;
+DROP TABLE IF EXISTS Job;
 
 DROP TABLE IF EXISTS User_log;
 DROP TABLE IF EXISTS Authentication;
@@ -20,36 +12,46 @@ DROP TABLE IF EXISTS Institution;
 DROP TABLE IF EXISTS Individual;
 DROP TABLE IF EXISTS User;
 
-DROP TABLE IF EXISTS Error;
-DROP TABLE IF EXISTS BLAST;
-DROP TABLE IF EXISTS MitoLoc;
-DROP TABLE IF EXISTS Result;
-DROP TABLE IF EXISTS Job;
+DROP TABLE IF EXISTS Interacts;
+DROP TABLE IF EXISTS protein_link_genbank;
+DROP TABLE IF EXISTS protein_link_refseq;
+DROP TABLE IF EXISTS protein_link_uniprotKB;
+DROP TABLE IF EXISTS GenBank;
+DROP TABLE IF EXISTS RefSeq;
+DROP TABLE IF EXISTS UniprotKB;
+
+DROP TABLE IF EXISTS protein_has_go;
+DROP TABLE IF EXISTS protein_has_location;
+DROP TABLE IF EXISTS Gene_Ontology;
+DROP TABLE IF EXISTS Subcellular_Location;
+DROP TABLE IF EXISTS Protein_Info;
+DROP TABLE IF EXISTS Protein;
 /*----------------------------------Proteins-------------------------------------------*/
 
 CREATE TABLE Protein(
-	pid INTEGER,
-	name varchar(50),
+	pid INTEGER AUTO_INCREMENT,
+	name varchar(100),
 	PRIMARY KEY(pid)
 )ENGINE=InnoDB;
 
 /* Protein_Info: contains all detailed information related to a specific protein, created for more efficiency
+	sequence: several lines of strings, can be very long!
 */
 CREATE TABLE Protein_Info(
 	pid INTEGER,
-	description varchar(200),
+	description varchar(500),
 	organism varchar(100),
-	sequence varchar(200),
+	sequence varchar(1000),
 	FOREIGN KEY(pid) REFERENCES Protein(pid),
 	PRIMARY KEY(pid)
 )ENGINE = InnoDB;
 
 CREATE TABLE Interacts(
-	fake_id INTEGER,
+	fake_id INTEGER AUTO_INCREMENT,
 	pid_a INTEGER,
 	pid_b INTEGER,
-	detection_method varchar(100),
-	interact_desc varchar(100),
+	detection_method varchar(200),
+	description varchar(300),
 	reference varchar(200),
 	source varchar(100),
 	FOREIGN KEY(pid_a) REFERENCES Protein(pid),
@@ -57,7 +59,9 @@ CREATE TABLE Interacts(
 	PRIMARY KEY(fake_id)
 )ENGINE=InnoDB;
 
-
+/*GenBank, RefSeq & UniprotKB: 
+	id: number or string?
+*/
 CREATE TABLE GenBank(
 	genbank_id INTEGER,
 	PRIMARY KEY(genbank_id)
@@ -81,7 +85,7 @@ CREATE TABLE protein_link_genbank(
 	genbank_id INTEGER,
 	PRIMARY KEY(pid,genbank_id),
 	FOREIGN KEY(pid) REFERENCES Protein(pid),
-	FOREIGN KEY(genbank_id) REFERENCES EnsemblePlant(genbank_id)
+	FOREIGN KEY(genbank_id) REFERENCES GenBank(genbank_id)
 )ENGINE=InnoDB;
 
 
@@ -109,7 +113,7 @@ CREATE TABLE protein_link_uniprotKB(
 	GOId: given by the database, a combination of numbers and characters
 */
 CREATE TABLE Gene_Ontology(
-	model varchar(30),
+	model varchar(50),
 	go_id varchar(30),
 	evidence varchar(30),
 	term_name varchar(100),
@@ -120,7 +124,7 @@ CREATE TABLE Gene_Ontology(
 */
 CREATE TABLE protein_has_go(
 	pid INTEGER,
-	GOId INTEGER,
+	go_id varchar(30),
 	FOREIGN KEY(pid) REFERENCES Protein(pid),
 	FOREIGN KEY(go_id) REFERENCES Gene_Ontology(go_id),
 	PRIMARY KEY(pid, go_id)
@@ -147,12 +151,12 @@ CREATE TABLE protein_has_location(
 
 CREATE TABLE User( 
 	uid INTEGER AUTO_INCREMENT,
-	address VARCHAR(40),
-	city VARCHAR(20),
+	address VARCHAR(200),
+	city VARCHAR(50),
 	state VARCHAR(20),
 	zipcode VARCHAR(10),
 	member_since DATE,
-	username VARCHAR(10),
+	username VARCHAR(20),
 	email VARCHAR(30),
 	primary key (uid)
 )engine = InnoDB;
@@ -177,8 +181,8 @@ CREATE TABLE Authentication(
 
 CREATE TABLE Security(
 	uid INTEGER,
-	question VARCHAR(50),
-	answer VARCHAR(50),
+	question VARCHAR(100),
+	answer VARCHAR(100),
 	PRIMARY KEY (uid),
 	FOREIGN KEY (uid) REFERENCES User(uid) ON DELETE CASCADE
 )ENGINE = InnoDB;
@@ -236,20 +240,26 @@ CREATE TABLE Error(
 	errCode INTEGER,
 	description varchar(200),
 	PRIMARY KEY(errCode),
-	FOREIGN KEY(JobId) REFERENCES Job(Job_id)
+	FOREIGN KEY(job_id) REFERENCES Job(job_id)
 )ENGINE = InnoDB;
 
+/*BLAST:
+	db_name: name of the database
+	(MySQL doesn't allow 'database' to be a column's name!)
+*/
 CREATE TABLE BLAST(
-	database varchar(100),
+	db_name varchar(100),
 	evalue varchar(100),
-	job_id INTEGER, 
-	FOREIGN KEY (job_id) REFERENCES Job(job_id)
+	job_id INTEGER,
+	FOREIGN KEY (job_id) REFERENCES Job(job_id),
+	PRIMARY KEY (job_id)
 )ENGINE = InnoDB;
 
 CREATE TABLE MitoLoc(
 	specificity varchar(100),
 	job_id INTEGER,
-	FOREIGN KEY (job_id) REFERENCES Job(job_id)
+	FOREIGN KEY (job_id) REFERENCES Job(job_id),
+	PRIMARY KEY (job_id)
 )ENGINE = InnoDB;
 
 /*Result: records the output of each job once it's done by the tool
