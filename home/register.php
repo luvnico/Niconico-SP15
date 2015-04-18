@@ -31,18 +31,24 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script>
-		function changeForm(item){
-			var selec = item;
-			switch(selec)
-			{
-				case 'indiv':
-				   $('#registration_indiv').show();
-				   break;
-			   case 'instit':
-				   $('#registration_institution').hide();
-				   break;
-		   }
-		}
+		function AddSelection(){
+  			
+  			activeOption = document.getElementById("usertype").selectedIndex;
+  			
+  			if (activeOption == 1)
+  			{
+  				document.getElementById("div0").style.display = "block";
+  				document.getElementById("div1").style.display = "block";
+  				document.getElementById("div2").style.display = "none";
+  			}
+  			
+  			if (activeOption == 2) 
+  			{
+  				document.getElementById("div0").style.display = "none";
+  				document.getElementById("div1").style.display = "none";
+  				document.getElementById("div2").style.display = "block";
+  			}		
+  		}
 	</script>
 </head>
 
@@ -122,57 +128,98 @@
  <!-- Page Content -->
     <div class="container">
 <!-- Contact Form -->
+
         <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
+
         <div class="row">
+
             <div class="col-md-8">
+
                 <h3>Registration Form</h3>
-                <form action="functions.php" method="post" name="registration" id="contactForm" novalidate>
+
+                <form action="functions.php" method="POST" name="registration" id="contactForm" novalidate>
+
                     <div class="control-group form-group">
                         <div class="controls">
                             <label>Select User Type:</label>
-                            <select name="user-type" class="form-control" id="usertype" required data-validation-required-message="Please enter your name.">
-								<option value="individual" onclick="changeForm('indiv')"id="indiv">Individual</option>
-								<option value="institution"  onclick="changeForm('instit')"id="instit">Institution</option>
+                            <select name="user-type" onchange="AddSelection()" class="form-control" id="usertype" required data-validation-required-message="Please enter your name.">
+								<option >---user type---</option>
+								<option value="individual" id="indiv">Individual</option>
+								<option value="institution" id="instit">Institution</option>
 							</select>
                             <p class="help-block"></p>
                         </div>
-                    </div>
-				</form>
-				<form action="functions.php" method="post" name="registration_indiv" id="registration_indiv" novalidate>
-					<div class="control-group form-group">
+                
                         <div class="controls">
-                            <label>Firstname:</label>
-                            <input type="text" class="form-control" id="name" required data-validation-required-message="Please enter your Firstname.">
+                            <label>Username</label>
+                            <input type="text" class="form-control" id="username" name="username"required data-validation-required-message="Please enter your Username.">
                             <p class="help-block"></p>
                         </div>
-                    </div>
-                    <div class="control-group form-group">
-                        <div class="controls">
-                            <label>Phone Number:</label>
-                            <input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number.">
+
+                        <div id="div2" style="display: none;" class="controls">
+                            <label>Institution Name</label>
+                            <input type="text" class="form-control" id="institution_name" name="institution_name" required data-validation-required-message="Please enter your Institution Name.">
+                            <p class="help-block"></p>
                         </div>
-                    </div>
-                    <div class="control-group form-group">
-                        <div class="controls">
-                            <label>Email Address:</label>
-                            <input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address.">
+                        
+                        <div id="div0" style="display: none;" class="controls">
+                            <label>Firstname</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname" required data-validation-required-message="Please enter your Firstname.">
+                            <p class="help-block"></p>
                         </div>
-                    </div>
-				</form>
-				<form action="functions.php" method="post" name="registration_institution" id="registration_institution" novalidate>
-                    <div class="control-group form-group">
-                        <div class="controls">
-                            <label>Message:</label>
-                            <textarea rows="10" cols="100" class="form-control" id="message" required data-validation-required-message="Please enter your message" maxlength="999" style="resize:none"></textarea>
+                        
+                        <div id="div1" style="display: none;" class="controls">
+                            <label>Lastname</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" required data-validation-required-message="Please enter your Lastname.">
+                            <p class="help-block"></p>
                         </div>
+                                                
+                        <div class="controls">
+                            <label>Email</label>
+                            <input type="text" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your Email.">
+                            <p class="help-block"></p>
+                        </div>
+                        
+                        <div class="controls">
+                            <label>Address</label>
+                            <input type="text" class="form-control" id="address" name="address" required data-validation-required-message="Please enter your Address.">
+                            <p class="help-block"></p>
+                        </div>
+                        
+                        <div class="controls">
+                            <label>City</label>
+                            <input type="text" class="form-control" id="city" name="city" required data-validation-required-message="Please enter your City.">
+                            <p class="help-block"></p>
+                        </div>
+                        
+                        <div class="controls">
+                            <label>State</label>
+                            <input type="text" class="form-control" id="state" name="state" required data-validation-required-message="Please enter your State.">
+                            <p class="help-block"></p>
+                        </div>
+                        
+                        <div class="controls">
+                            <label>Zip Code</label>
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" required data-validation-required-message="Please enter your Zipcode.">
+                            <p class="help-block"></p>
+                        </div>
+
                     </div>
+                    
                     <div id="success"></div>
+
                     <!-- For success/fail messages -->
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+
+                    <button type="submit" name="submitRegForm" class="btn btn-primary">Submit</button>
+
                 </form>
+
             </div>
 
+
+
         </div>
+
         <!-- /.row -->
 		        <hr>
 
