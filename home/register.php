@@ -24,6 +24,7 @@
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>‌​
+	<script src="js/jqBootstrapValidation.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,6 +32,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script>
+		 $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
 		function AddSelection(){
   			
   			activeOption = document.getElementById("usertype").selectedIndex;
@@ -49,6 +51,37 @@
   				document.getElementById("div2").style.display = "block";
   			}		
   		}
+
+		$(function() {
+
+			$("#username").on("change", function() {
+
+				var data = "username="+$("#username").val();
+
+				$.ajax({
+					type: 'POST',
+					url: 'check.php',
+					data: data,
+					dataType: 'html',
+					success: function(r)
+					{
+						if(r=="1")
+						{
+							//Exists
+							$("#user-result").html("Username already exists!").attr('style','color: #FF0000');
+							$("#username").attr('style','border:2px solid #FF0000');
+						}else{
+							//Doesn't exist
+							$("#user-result").html("Username available!").attr('style','color: #00b300'); 
+							$("#username").attr('style','border:2px solid #00b300');							
+						}
+					}
+				});
+
+			});
+
+		});
+		
 	</script>
 </head>
 
@@ -137,87 +170,84 @@
 
                 <h3>Registration Form</h3>
 
-                <form action="functions.php" method="POST" name="registration" id="contactForm" novalidate>
-
-                    <div class="control-group form-group">
-                        <div class="controls">
-                            <label>Select User Type:</label>
-                            <select name="user-type" onchange="AddSelection()" class="form-control" id="usertype" required data-validation-required-message="Please enter your name.">
-								<option >---user type---</option>
-								<option value="individual" id="indiv">Individual</option>
-								<option value="institution" id="instit">Institution</option>
-							</select>
-                            <p class="help-block"></p>
-                        </div>
+				<form action="functions.php" method="POST" name="registration"  id="userForm" novalidate>
+                     <div class="control-group form-group">   
                 
                         <div class="controls">
                             <label>Username</label>
-                            <input type="text" class="form-control" id="username" name="username"required data-validation-required-message="Please enter your Username.">
+                            <input type="text"  class="form-control"  id="username" name="username"required data-validation-required-message="Please enter your Username."/><span id="user-result"></span>
                             <p class="help-block"></p>
-                        </div>
+                        </div>													
+						<br>
 
-                        <div id="div2" style="display: none;" class="controls">
-                            <label>Institution Name</label>
-                            <input type="text" class="form-control" id="institution_name" name="institution_name" required data-validation-required-message="Please enter your Institution Name.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div id="div0" style="display: none;" class="controls">
-                            <label>Firstname</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname" required data-validation-required-message="Please enter your Firstname.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div id="div1" style="display: none;" class="controls">
-                            <label>Lastname</label>
-                            <input type="text" class="form-control" id="lastname" name="lastname" required data-validation-required-message="Please enter your Lastname.">
-                            <p class="help-block"></p>
-                        </div>
-                                                
-                        <div class="controls">
-                            <label>Email</label>
-                            <input type="text" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your Email.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div class="controls">
-                            <label>Address</label>
-                            <input type="text" class="form-control" id="address" name="address" required data-validation-required-message="Please enter your Address.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div class="controls">
-                            <label>City</label>
-                            <input type="text" class="form-control" id="city" name="city" required data-validation-required-message="Please enter your City.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div class="controls">
-                            <label>State</label>
-                            <input type="text" class="form-control" id="state" name="state" required data-validation-required-message="Please enter your State.">
-                            <p class="help-block"></p>
-                        </div>
-                        
-                        <div class="controls">
-                            <label>Zip Code</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode" required data-validation-required-message="Please enter your Zipcode.">
-                            <p class="help-block"></p>
-                        </div>
+							<div class="controls">
+								<label>Select User Type:</label>
+								<select name="user-type" onchange="AddSelection()" class="form-control" id="usertype" required data-validation-required-message="Please enter your name.">
+									<option >---user type---</option>
+									<option value="individual" id="indiv">Individual</option>
+									<option value="institution" id="instit">Institution</option>
+								</select>
+								<p class="help-block"></p>
+							</div>
 
-                    </div>
+							<div id="div2" style="display: none;" class="controls">
+								<label>Institution Name</label>
+								<input type="text" class="form-control" id="institution_name" name="institution_name">
+								<p class="help-block"></p>
+							</div>
+							
+							<div id="div0" style="display: none;" class="controls">
+								<label>Firstname</label>
+								<input type="text" class="form-control" id="firstname" name="firstname" >
+								<p class="help-block"></p>
+							</div>
+							
+							<div id="div1" style="display: none;" class="controls">
+								<label>Lastname</label>
+								<input type="text" class="form-control" id="lastname" name="lastname" >
+								<p class="help-block"></p>
+							</div>
+													
+							<div class="controls">
+								<label>Email</label>
+								<input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your Email.">
+								<p class="help-block"></p>
+							</div>
+							
+							<div class="controls">
+								<label>Address</label>
+								<input type="text" class="form-control" id="address" name="address" required data-validation-required-message="Please enter your Address.">
+								<p class="help-block"></p>
+							</div>
+							
+							<div class="controls">
+								<label>City</label>
+								<input type="text" class="form-control" id="city" name="city" required data-validation-required-message="Please enter your City.">
+								<p class="help-block"></p>
+							</div>
+							
+							<div class="controls">
+								<label>State</label>
+								<input type="text" class="form-control" id="state" name="state" required data-validation-required-message="Please enter your State.">
+								<p class="help-block"></p>
+							</div>
+							
+							<div class="controls">
+								<label>Zip Code</label>
+								<input type="text" class="form-control" id="zipcode" name="zipcode" data-validation-required-message="Please enter your Zipcode." required>
+								<p class="help-block"></p>
+							</div>
+						</div>
+                   
                     
                     <div id="success"></div>
 
                     <!-- For success/fail messages -->
 
                     <button type="submit" name="submitRegForm" class="btn btn-primary">Submit</button>
-
-                </form>
-
+                
             </div>
-
-
-
+			</form>
         </div>
 
         <!-- /.row -->
