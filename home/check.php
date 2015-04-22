@@ -1,10 +1,10 @@
 <?php
 	require '../secure/database.php';
 
-	if (isset($_POST['submitRegForm']))
-	{	
+	//if (isset($_POST['username']))
+	//{	
 		$username = htmlspecialchars($_POST['username']);
-		$user_type = htmlspecialchars($_POST['user-type']);
+		/*	$user_type = htmlspecialchars($_POST['user-type']);
 		$institution_name = htmlspecialchars($_POST['institution_name']);
 		$firstname = htmlspecialchars($_POST['firstname']);
 		$lastname = htmlspecialchars($_POST['firstname']);
@@ -12,10 +12,9 @@
 		$address = htmlspecialchars($_POST['address']);
 		$city = htmlspecialchars($_POST['city']);
 		$state = htmlspecialchars($_POST['state']);
-		$zipcode = htmlspecialchars($_POST['zipcode']);
+		$zipcode = htmlspecialchars($_POST['zipcode']);*/
 		$username_exists = 0;
-		print_r($_POST);
-		exit();
+	
 		try 
 		{
 			$conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
@@ -43,7 +42,7 @@
 		}
 		$conn = null;		
 
-	}
+	//}
 		
 	
 ?>
