@@ -12,7 +12,7 @@ Nick:
 
 4/1 ~ 4/8
 Yihua:
-
+  Parsed and handled all data using regular expression and sqlite3. Finished importing data into database.
 Xueyan:
   Make the page connect to the group database and set secure database file.
 Cecilia:
@@ -31,7 +31,7 @@ Nick:
 
 4/16 ~ 4/23
 Yihua:
-
+  Revised navigation bar, made it a separate file and added a js function to toggle the highlight effect.
 Xueyan:
   
 Cecilia:
